@@ -47,16 +47,15 @@ data class Artwork(
 
 @Composable
 fun ArtSpaceApp(modifier: Modifier = Modifier) {
-    val artworks = listOf(
-        Artwork(R.drawable.img1, "Título 1", "Artista 1", "2020"),
-        Artwork(R.drawable.img2, "Título 2", "Artista 2", "2021"),
-        Artwork(R.drawable.img3, "Título 3", "Artista 3", "2022"),
-        Artwork(R.drawable.img4, "Título 4", "Artista 4", "2020"),
-        Artwork(R.drawable.img5, "Título 5", "Artista 5", "2020")
-    )
+    var currentArtwork by remember { mutableStateOf(1) }
 
-    var current by remember { mutableStateOf(0) }
-    val artwork = artworks[current]
+    val artwork = when (currentArtwork) {
+        1 -> Artwork(R.drawable.img1, "Título 1", "Artista 1", "2020")
+        2 -> Artwork(R.drawable.img2, "Título 2", "Artista 2", "2021")
+        3 -> Artwork(R.drawable.img3, "Título 3", "Artista 3", "2022")
+        4 -> Artwork(R.drawable.img4, "Título 4", "Artista 4", "2020")
+        else -> Artwork(R.drawable.img5, "Título 5", "Artista 5", "2020")
+    }
 
     Column(
         modifier = modifier
@@ -86,7 +85,10 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
         ) {
             Button(
                 onClick = {
-                    current = if (current == 0) artworks.lastIndex else current - 1
+                    currentArtwork = when (currentArtwork) {
+                        1 -> 5
+                        else -> currentArtwork - 1
+                    }
                 },
                 modifier = Modifier
                     .weight(1f)
@@ -95,7 +97,10 @@ fun ArtSpaceApp(modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    current = if (current == artworks.lastIndex) 0 else current + 1
+                    currentArtwork = when (currentArtwork) {
+                        5 -> 1
+                        else -> currentArtwork + 1
+                    }
                 },
                 modifier = Modifier
                     .weight(1f)
